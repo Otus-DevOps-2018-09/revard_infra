@@ -1,5 +1,7 @@
 # revard_infra
-bastion_IP = 35.189.211.216 
+
+bastion_IP = 35.189.211.216
+
 someinternalhost_IP = 10.132.0.3
 
 # One command connect to someinternalhost
@@ -20,3 +22,4 @@ appuser@someinternalhost:~$ logout
 See config file in root dir. 
 
 Have problem with tty while connect. Need some bugfix.
+
