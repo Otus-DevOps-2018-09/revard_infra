@@ -1,0 +1,9 @@
+Host someinternalhost
+  HostName 35.189.211.216
+  Port 22
+  RequestTTY yes
+  User appuser
+  IdentityFile ~/.ssh/appuser
+  ForwardAgent yes
+  PermitLocalCommand yes
+  LocalCommand ssh 10.132.0.3
