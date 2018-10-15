@@ -23,3 +23,6 @@ See config file in root dir.
 
 Have problem with tty while connect. Need some bugfix.
 
+# Setup SSL key and it works :) 
+
+Checked by https://35.189.211.216.sslip.io/login
