@@ -19,10 +19,36 @@ appuser@someinternalhost:~$ logout
 
 # Setup ssh alias
 
-See config file in root dir. 
+Host bastion
+  User appuser
 
-Have problem with tty while connect. Need some bugfix.
+  IdentityFile ~/.ssh/appuser
+
+  Hostname 35.189.211.216
+
+Host someinternalhost
+
+  HostName 10.132.0.3
+
+  Port 22
+
+  User appuser
+
+  ProxyCommand ssh -q -W %h:%p bastion
+
+
+tgz @ alf-server ~/revard_infra (cloud-bastion)
+
+└─ $ > ssh someinternalhost
+
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-1021-gcp x86_64)
+
+Last login: Mon Oct 15 18:20:22 2018 from 10.132.0.2
+
+appuser@someinternalhost:~$
+
 
 # Setup SSL key and it works :) 
 
-Checked by https://35.189.211.216.sslip.io/login
+Check by https://35.189.211.216.sslip.io/login
+
