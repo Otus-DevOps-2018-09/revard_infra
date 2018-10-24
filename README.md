@@ -12,40 +12,35 @@ testapp_IP = 35.195.127.189
 
 testapp_port = 9292 
 
-### Startup script
+### Instalation and use
+ 
+Packer configs in directory packer.
+
+All scripts in directory packer/scripts.
+
+User commands bellow to get full installed image adn VM fo puma server.
+
+### Commands for create immutable template by pxacker
 ```
-#!/bin/bash
+tgz @ alf-server ~/revard_infra/packer (packer-base)
+└─ $ > packer validate -var-file=variables.json immutable.json
+Template validated successfully.
+tgz @ alf-server ~/revard_infra/packer (packer-base)
+└─ $ > packer build -var-file=variables.json immutable.json
+googlecompute output will be in this color.
 
-echo "----- Installing ruby! -----"
-sudo apt update
-sudo apt install -y ruby-full ruby-bundler build-essential
-
-echo "----- Installing MongoDB! -----"
-sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
-sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" >  /etc/apt/sources.list.d/mongodb-org-3.2.list'
-sudo apt update
-sudo apt install -y mongodb-org
-
-echo "----- Starting MongoDB! ------"
-sudo systemctl start mongod
-sudo systemctl enable mongod
-sudo systemctl status mongod
-
-echo "----- Deploying application! ------"
-git clone -b monolith https://github.com/express42/reddit.git
-cd reddit && bundle install
-puma -d
-ps aux | grep puma
+==> googlecompute: Checking image does not exist...
+==> googlecompute: Creating temporary SSH key for instance...
+==> googlecompute: Using image: ubuntu-1604-xenial-v20181023
+==> googlecompute: Creating instance...
+...
 ```
 
-### Gcloud command add firewall rule
+### Command for create VN for gcloud
 ```
-gcloud compute firewall-rules create default-puma-server \
-    --network default \
-    --action allow \
-    --direction ingress \
-    --rules tcp:9292 \
-    --source-ranges 0.0.0.0/0 \
-    --priority 1000 \
-    --target-tags puma-server
+tgz @ alf-server ~/revard_infra/packer (packer-base)
+└─ $ > gcloud compute instances create packer-systemd-test5 --tags=puma-server  --image-family reddit-full
+Created [https://www.googleapis.com/compute/v1/projects/infra-219211/zones/europe-west1-b/instances/packer-systemd-test5].
+NAME                  ZONE            MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+packer-systemd-test5  europe-west1-b  n1-standard-1               10.132.0.6   35.195.234.157  RUNNING
 ```
