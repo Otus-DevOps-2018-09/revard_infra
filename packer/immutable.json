@@ -33,7 +33,7 @@
         },
 	{
             "type": "file",
-            "source": "/home/tgz/revard_infra/packer/scripts/puma.service",
+            "source": "/home/tgz/revard_infra/packer/files/puma.service",
             "destination": "/home/appuser/puma.service"
         },
         {

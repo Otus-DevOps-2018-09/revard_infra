@@ -1,7 +1,8 @@
 #!/bin/bash
 
 if [[ $1  ]]; then
-    gcloud compute instances create $1 --image=reddit-full-1540142482 --tags puma-server --metadata-from-file startup-script=/home/tgz/revard_infra/packer/scripts/startup_script.sh
+	packer validate -var-file=variables.json immutable.json &&  packer build -var-file=variables.json immutable.json
+	gcloud compute instances create $1 --tags=puma-server  --image-family reddit-full
 else
     echo "Argument error: need VM name"
 fi
