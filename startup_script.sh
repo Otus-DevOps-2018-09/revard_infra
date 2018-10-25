@@ -1,19 +1,3 @@
-# revard_infra
-
-bastion_IP = 35.189.211.216
-
-someinternalhost_IP = 10.132.0.3
-
-testapp_IP = 35.198.167.169
-
-testapp_port = 9292 
-
-testapp_IP = 35.195.127.189
-
-testapp_port = 9292 
-
-### Startup script
-```
 #!/bin/bash
 
 echo "----- Installing ruby! -----"
@@ -36,16 +20,3 @@ git clone -b monolith https://github.com/express42/reddit.git
 cd reddit && bundle install
 puma -d
 ps aux | grep puma
-```
-
-### Gcloud command add firewall rule
-```
-gcloud compute firewall-rules create default-puma-server \
-    --network default \
-    --action allow \
-    --direction ingress \
-    --rules tcp:9292 \
-    --source-ranges 0.0.0.0/0 \
-    --priority 1000 \
-    --target-tags puma-server
-```
