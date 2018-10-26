@@ -1,12 +1,92 @@
-# revard_infra
+# Otus devops course
+
+## HW-3 Bastion
 
 bastion_IP = 35.189.211.216
 
 someinternalhost_IP = 10.132.0.3
 
+### One command connect to someinternalhost
+```
+tgz@alf-server:~$ ssh  -i ~/.ssh/appuser -A -t appuser@35.189.211.216 "ssh  10.132.0.3"
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-1021-gcp x86_64)
+...
+Last login: Sun Oct 14 13:51:22 2018 from 10.132.0.2
+appuser@someinternalhost:~$ logout
+```
+
+### Setup ssh alias
+```
+Host bastion
+  User appuser
+  IdentityFile ~/.ssh/appuser
+  Hostname 35.189.211.216
+
+Host someinternalhost
+  HostName 10.132.0.3
+  Port 22
+  User appuser
+  ProxyCommand ssh -q -W %h:%p bastion
+```
+Test
+```
+tgz @ alf-server ~/revard_infra (cloud-bastion)
+└─ $ > ssh someinternalhost
+Welcome to Ubuntu 18.04.1 LTS (GNU/Linux 4.15.0-1021-gcp x86_64)
+...
+Last login: Mon Oct 15 18:20:22 2018 from 10.132.0.2
+appuser@someinternalhost:~$
+```
+
+### Setup SSL key and it works :) 
+
+Check by https://35.189.211.216.sslip.io/login
+
+## HW-4 Cloud test
+
 testapp_IP = 35.195.127.189
 
 testapp_port = 9292 
+
+### Startup script
+```
+#!/bin/bash
+
+echo "----- Installing ruby! -----"
+sudo apt update
+sudo apt install -y ruby-full ruby-bundler build-essential
+
+echo "----- Installing MongoDB! -----"
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
+sudo bash -c 'echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.2 multiverse" >  /etc/apt/sources.list.d/mongodb-org-3.2.list'
+sudo apt update
+sudo apt install -y mongodb-org
+
+echo "----- Starting MongoDB! ------"
+sudo systemctl start mongod
+sudo systemctl enable mongod
+sudo systemctl status mongod
+
+echo "----- Deploying application! ------"
+git clone -b monolith https://github.com/express42/reddit.git
+cd reddit && bundle install
+puma -d
+ps aux | grep puma
+```
+
+### Gcloud command add firewall rule
+```
+gcloud compute firewall-rules create default-puma-server \
+    --network default \
+    --action allow \
+    --direction ingress \
+    --rules tcp:9292 \
+    --source-ranges 0.0.0.0/0 \
+    --priority 1000 \
+    --target-tags puma-server
+```
+
+## HW-5 Packer base
 
 ### Instalation and use
  
@@ -29,4 +109,7 @@ $ > gcloud compute instances create packer-systemd-test5 --tags=puma-server  --i
 ```
 
 ### Script for automation
+```
 $ > create-redditvm.sh
+```
+
