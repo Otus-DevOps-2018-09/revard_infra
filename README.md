@@ -113,3 +113,22 @@ $ > gcloud compute instances create packer-systemd-test5 --tags=puma-server  --i
 $ > create-redditvm.sh
 ```
 
+## HW-6 Terraform -1 
+
+Creater config for deploying reddit servers and load balancer
+
+Be awere with prameters when using multiple instances. 
+
+Example of output after first initialization:
+
+```
+Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+app_balancer_ip = 35.187.84.1xx
+app_external_ip = [
+    35.241.143.xx,
+    35.195.140.xx
+]
+```
