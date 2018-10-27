@@ -117,12 +117,34 @@ $ > create-redditvm.sh
 
 Creater config for deploying reddit servers and load balancer
 
-Be awere with prameters when using multiple instances. 
+Be aware with prameters when using multiple instances. 
 
 Example of output after first initialization:
 
 ```
 Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+app_balancer_ip = 35.187.84.1xx
+app_external_ip = [
+    35.241.143.xx,
+    35.195.140.xx
+]
+```
+
+After initialization, we can see all resouses:
+```
+$ > terraform apply
+google_compute_project_metadata.ssh_keys: Refreshing state... (ID: common_metadata)
+google_compute_http_health_check.basic-check: Refreshing state... (ID: basic-check)
+google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app[0]: Refreshing state... (ID: reddit-app-0)
+google_compute_instance.app[1]: Refreshing state... (ID: reddit-app-1)
+google_compute_target_pool.www-network-lb: Refreshing state... (ID: www-network-lb)
+google_compute_forwarding_rule.www-rule: Refreshing state... (ID: www-rule)
+
+Apply complete! Resources: 0 added, 0 changed, 0 destroyed.
 
 Outputs:
 
