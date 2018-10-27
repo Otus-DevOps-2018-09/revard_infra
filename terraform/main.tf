@@ -1,55 +1,74 @@
+# Provider google
+
 provider "google" {
   version = "1.4.0"
-  project = "infra-219211"
-  region = "europe-west1-b"
+  project = "${var.project}"
+  region  = "${var.region}"
 }
+
+# Res instance
+
 resource "google_compute_instance" "app" {
-  name = "reddit-app"
+  name         = "reddit-app"
   machine_type = "g1-small"
-  zone = "europe-west1-b"
+  zone         = "var.zone"
+
   # определение загрузочного диска
   boot_disk {
     initialize_params {
-      image = "reddit-base"
+      image = "${var.disk_image}"
     }
-  } 
+  }
+
   # определение сетевого интерфейса
   network_interface {
     # сеть, к которой присоединить данный интерфейс
     network = "default"
+
     # использовать ephemeral IP для доступа из Интернет
     access_config {}
   }
+
   metadata {
-    ssh-keys = "appuser:${file("~/.ssh/appuser.pub")}"
+    ssh-keys = "appuser:${file(var.public_key_path)}"
   }
+
   tags = ["reddit-app"]
+
   provisioner "file" {
-    source = "files/puma.service"
+    source      = "files/puma.service"
     destination = "/tmp/puma.service"
   }
+
   provisioner "remote-exec" {
     script = "files/deploy.sh"
   }
+
   connection {
-    type = "ssh"
-    user = "appuser"
-    agent = false
-    private_key = "${file("~/.ssh/appuser")}"
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file(var.private_key_path)}"
   }
 }
 
+# Res firewall
+
 resource "google_compute_firewall" "firewall_puma" {
-   name = "allow-puma-default"
+  name = "allow-puma-default"
+
   # Название сети, в которой действует правило
-   network = "default"
+  network = "default"
+
   # Какой доступ разрешить
-   allow {
+  allow {
     protocol = "tcp"
-    ports = ["9292"]
-   }
+    ports    = ["9292"]
+  }
+
   # Каким адресам разрешаем доступ
-   source_ranges = ["0.0.0.0/0"]
+  source_ranges = ["0.0.0.0/0"]
+
   # Правило применимо для инстансов с перечисленными тэгами
-   target_tags = ["reddit-app"]
+  target_tags = ["reddit-app"]
 }
