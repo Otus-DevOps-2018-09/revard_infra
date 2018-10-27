@@ -9,12 +9,11 @@ provider "google" {
 # Res instance
 
 resource "google_compute_instance" "app" {
-#  name         = "reddit-app"
+  #  name         = "reddit-app"
   name         = "reddit-app-${count.index}"
   machine_type = "g1-small"
-  zone         = "${var.vmzone}"
-  count = "2"
-  
+  zone         = "${var.zone}"
+  count        = "2"
 
   # определение загрузочного диска
   boot_disk {
@@ -30,29 +29,22 @@ resource "google_compute_instance" "app" {
 
     # использовать ephemeral IP для доступа из Интернет
     access_config {
-#      nat_ip = "${element(google_compute_address.*.self_link, count.index)}"
-#      nat_ip = "${google_compute_address.default.address}"
- #    nat_ip = "${lookup(var.instance_ips, count.index)}"
- # nat_ip = "${google_compute_instance.app.*.network_interface.0.access_config.0.assigned_nat_ip}"
+      #      nat_ip = "${element(google_compute_address.*.self_link, count.index)}"  #      nat_ip = "${google_compute_address.default.address}"  #    nat_ip = "${lookup(var.instance_ips, count.index)}"  # nat_ip = "${google_compute_instance.app.*.network_interface.0.access_config.0.assigned_nat_ip}"
     }
-  
- }
+  }
 
   #metadata {
   #  ssh-keys = "appuser:${file(var.public_key_path)}appuser1:${file(var.public_key_path)}appuser2:${file(var.public_key_path)}"
   #}
 
   tags = ["reddit-app"]
-
   provisioner "file" {
     source      = "files/puma.service"
     destination = "/tmp/puma.service"
   }
-
   provisioner "remote-exec" {
     script = "files/deploy.sh"
   }
-
   connection {
     type        = "ssh"
     user        = "appuser"
@@ -62,8 +54,8 @@ resource "google_compute_instance" "app" {
 }
 
 resource "google_compute_project_metadata" "ssh_keys" {
-   metadata {
-     ssh-keys = "appuser:${file(var.public_key_path)}appuser1:${file(var.public_key_path)}appuser2:${file(var.public_key_path)}"
+  metadata {
+    ssh-keys = "appuser:${file(var.public_key_path)}appuser1:${file(var.public_key_path)}appuser2:${file(var.public_key_path)}"
   }
 }
 
@@ -88,7 +80,6 @@ resource "google_compute_firewall" "firewall_puma" {
   target_tags = ["reddit-app"]
 }
 
-
 #variable "instance_ips" {
 #  default = {
 #    "0" = "35.241.163.65"
@@ -96,6 +87,8 @@ resource "google_compute_firewall" "firewall_puma" {
 #  }
 #}
 
+
 #output "externalip" {
 # value = "${google_compute_instance.app.*.network_interface.0.access_config.0.assigned_nat_ip}"
 #}
+
