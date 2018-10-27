@@ -11,7 +11,7 @@ provider "google" {
 resource "google_compute_instance" "app" {
   name         = "reddit-app"
   machine_type = "g1-small"
-  zone         = "var.zone"
+  zone         = "${var.vmzone}"
 
   # определение загрузочного диска
   boot_disk {
@@ -29,9 +29,9 @@ resource "google_compute_instance" "app" {
     access_config {}
   }
 
-  metadata {
-    ssh-keys = "appuser:${file(var.public_key_path)}"
-  }
+  #metadata {
+  #  ssh-keys = "appuser:${file(var.public_key_path)}appuser1:${file(var.public_key_path)}appuser2:${file(var.public_key_path)}"
+  #}
 
   tags = ["reddit-app"]
 
@@ -49,6 +49,17 @@ resource "google_compute_instance" "app" {
     user        = "appuser"
     agent       = false
     private_key = "${file(var.private_key_path)}"
+  }
+}
+
+resource "google_compute_project_metadata" "ssh_keys" {
+   metadata {
+     ssh-keys = "appuser:${file(var.public_key_path)}appuser1:${file(var.public_key_path)}appuser2:${file(var.public_key_path)}"
+#    ssh-keys = <<EOF
+#    appuser:${file(var.public_key_path)}
+#    appuser1:${file(var.public_key_path)}
+#    appuser2:${file(var.public_key_path)}
+#    EOF
   }
 }
 
