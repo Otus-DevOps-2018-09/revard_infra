@@ -182,3 +182,12 @@ Can see tree
 
 5 directories, 3 files
 ```
+### Create enviroments
+Make env dirs (stage and prod) and config in it.
+Go to ech dir end run
+```
+$ terraform init
+...
+$ terraform plan
+...
+```
