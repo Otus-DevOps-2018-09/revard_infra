@@ -191,3 +191,21 @@ $ terraform init
 $ terraform plan
 ...
 ```
+
+### Create backend configuration.
+
+Create backend.tf files in env dirs. Then run:
+```
+ $ terraform init
+Initializing modules...
+- module.app
+- module.db
+- module.vpc
+
+Initializing the backend...
+
+Successfully configured the backend "gcs"! Terraform will automatically
+use this backend unless the backend configuration changes.
+...
+```
+
