@@ -27,4 +27,3 @@ variable files_puma_service {
 variable files_deploy_sh {
   description = "Var for puma start"
 }
-

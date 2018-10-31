@@ -10,11 +10,10 @@ resource "google_compute_instance" "db" {
     }
   }
 
-network_interface {
+  network_interface {
     network = "default"
 
-    access_config = {
-    }
+    access_config = {}
   }
 
   metadata {
@@ -23,7 +22,6 @@ network_interface {
 }
 
 resource "null_resource" "db_provisioner" {
-
   count = "${var.provision_var}"
 
   connection {
@@ -31,7 +29,7 @@ resource "null_resource" "db_provisioner" {
     user        = "appuser"
     agent       = false
     private_key = "${file(var.private_key_path)}"
-    host = "${google_compute_instance.db.network_interface.0.access_config.0.nat_ip}"
+    host        = "${google_compute_instance.db.network_interface.0.access_config.0.nat_ip}"
   }
 
   provisioner "remote-exec" {
@@ -41,4 +39,3 @@ resource "null_resource" "db_provisioner" {
     ]
   }
 }
-

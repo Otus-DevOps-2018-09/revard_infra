@@ -19,4 +19,3 @@ variable "private_key_path" {
 variable provision_var {
   description = "Set this var to 1 for provision runnig"
 }
-
