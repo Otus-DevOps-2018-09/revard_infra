@@ -184,7 +184,7 @@ Can see tree
 ```
 ### Create enviroments
 Make env dirs (stage and prod) and config files in it.
-Go to ech dir end run
+Go to each dir end run
 ```
 $ terraform init
 ...
@@ -208,4 +208,6 @@ Successfully configured the backend "gcs"! Terraform will automatically
 use this backend unless the backend configuration changes.
 ...
 ```
+
+### Than we can use all the power of deployment and provisioning! 
 
