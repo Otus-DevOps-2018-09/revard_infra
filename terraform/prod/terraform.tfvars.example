@@ -1,6 +1,6 @@
 project = "infra-219xxx"
-public_key_path = "~/.ssh/xxxuser.pub"
-private_key_path = "~/.ssh/xxxuser"
+public_key_path = "~/.ssh/appuser.pub"
+private_key_path = "~/.ssh/appuser"
 disk_image = "reddit-xxxx"
 count = "1"
 files_puma_service = "../files/puma.service"
