@@ -37,7 +37,7 @@ based on the data obtained from the libcloud Node object:
  - gce_description
  - gce_status
  - gce_zone
- - gce_tags
+ - gce_tags 
  - gce_metadata
  - gce_network
  - gce_subnetwork
