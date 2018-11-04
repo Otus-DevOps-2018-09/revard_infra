@@ -235,9 +235,9 @@ $ > ansible all -i inventory.py -m ping
 ```
 You can find script in ansible dir. 
 
-## HW-8 Ansible-2
+## HW-9 Ansible-2
 
-### Instalation
+### Installation
 
 Clone repository.
 ```
