@@ -7,4 +7,5 @@ variables.json
 *.retry
 *.json
 jdauphant.nginx
+vault.key
 
