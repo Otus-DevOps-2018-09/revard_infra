@@ -6,4 +6,5 @@ variables.json
 .terraform/
 *.retry
 *.json
+jdauphant.nginx
 
