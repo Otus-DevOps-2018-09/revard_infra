@@ -1,7 +1,7 @@
 # Otus devops course
 
 ## HW-10 Ansible-3
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
 
 ### Ansible 
 
@@ -45,7 +45,7 @@ reddit-db                  : ok=4    changed=2    unreachable=0    failed=0
 ```
 
 ## HW-9 Ansible-2
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-2
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-2)
 
 ### Installation
 
@@ -151,7 +151,7 @@ $ > ansible-playbook  site.yml --check
 
 
 ## HW-8 Ansible-1
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-1
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-1)
 
 ### Installation and setup
 
@@ -177,7 +177,7 @@ You can find script in ansible dir.
 
 
 ## HW-7 Terraform-2
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=terraform-2
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=terraform-2)
 
 ### Create modules
 Make dirs for modules and load modules. Don`t forget about variables.
@@ -234,7 +234,7 @@ Than we can use all the power of deployment and provisioning!
 
 
 ## HW-6 Terraform -1 
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=terraform-1
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=terraform-1)
 
 Create config for deploying reddit servers and load balancer.
 
@@ -277,7 +277,7 @@ app_external_ip = [
 ```
 
 ## HW-5 Packer base
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=packer-base
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=packer-base)
 
 ### Installation and use
  
@@ -305,7 +305,7 @@ $ > create-redditvm.sh
 ```
 
 ## HW-4 Cloud test
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=cloud-testapp
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=cloud-testapp)
 
 testapp_IP = 35.195.127.189
 
@@ -351,7 +351,7 @@ gcloud compute firewall-rules create default-puma-server \
 
 
 ## HW-3 Bastion
-https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=cloud-bastion
+![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=cloud-bastion)
 
 bastion_IP = 35.189.211.216
 
