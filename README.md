@@ -1,7 +1,7 @@
 # Otus devops course
 
 ## HW-10 Ansible-3
-![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
+[![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
 
 ### Ansible 
 
