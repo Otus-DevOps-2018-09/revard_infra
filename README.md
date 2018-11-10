@@ -23,7 +23,10 @@ Add to .gitinfnore jdauphant.nginx. Manual can be found here https://github.com/
 
 #### Ansible Vault
 
-Put ansible vault key in ~/.ansible/vault.key. Documents about vault https://docs.ansible.com/ansible/devel/user_guide/vault.html Good examples how to create key can be found here https://gist.github.com/hvanderlaan/ae5d7f62d42c927fdad42309d25c9693. Nice one:
+Put ansible vault key in ~/.ansible/vault.key. 
+Documents about vault https://docs.ansible.com/ansible/devel/user_guide/vault.html 
+Good examples how to create key can be found here https://gist.github.com/hvanderlaan/ae5d7f62d42c927fdad42309d25c9693. 
+Nice one:
 ```
 # create large random password for ansible-vault
 openssl rand -base64 2048 > ansible-vault.pass
