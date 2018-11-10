@@ -3,6 +3,8 @@
 ## HW-10 Ansible-3
 [![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
 
+Read previous sections (HW 8-9) for project installation.  
+
 ### Ansible 
 
 Main dirs - roles, enviroments and palybooks. 
@@ -32,7 +34,7 @@ $ ansible-vault encrypt environments/prod/credentials.yml
 $ ansible-vault encrypt environments/stage/credentials.yml
 ```
 
-#### Deploy
+### Deploy
 
 For deploy application run:
 
@@ -44,12 +46,31 @@ reddit-app                 : ok=27   changed=18   unreachable=0    failed=0
 reddit-db                  : ok=4    changed=2    unreachable=0    failed=0
 ```
 
-#### Trytravis
+### Trytravis
+
+We can use trytravis for testing purpose.
 
 Manual https://github.com/SethMichaelLarson/trytravis
 
 Install `pip install trytravis`
 
+Setup trytravis `$ trytravis --repo ssh://git@github.com/[USERNAME]/[REPOSITORY]`
+
+Triger test:
+
+```
+trytravis 
+Adding a temporary remote to `ssh://git@github.com/revard/revard_infra_trytravis`...
+Adding all local changes...
+Committing local changes...
+Pushing to `trytravis` remote...
+Reverting to old state...
+Waiting for a Travis build to appear for `59b4fca88d09d4acd00eae3cbf8950202f1ce64e` after `2018-11-11 00:33:59`...
+```
+
+#### Travis automation: checks and tests
+
+In file .travis.yml writed some instructions and tests for checking of project integrity. We use packer, terraform and ansible validation.
 
 
 ## HW-9 Ansible-2
