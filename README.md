@@ -44,6 +44,14 @@ reddit-app                 : ok=27   changed=18   unreachable=0    failed=0
 reddit-db                  : ok=4    changed=2    unreachable=0    failed=0
 ```
 
+#### Trytravis
+
+Manual https://github.com/SethMichaelLarson/trytravis
+
+Install `pip install trytravis`
+
+
+
 ## HW-9 Ansible-2
 ![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-2)
 
@@ -88,7 +96,7 @@ $ > terraform apply
 
 An execution plan has been generated and is shown below.
 Resource actions are indicated with the following symbols:
-  + create
+i  + create
 
 Terraform will perform the following actions:
 
