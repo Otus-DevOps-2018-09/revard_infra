@@ -154,3 +154,60 @@ app_external_ip = [
     35.195.140.xx
 ]
 ```
+
+## HW-7 Terraform-2
+
+### Create modules
+Make dirs for modules and load modules. Dont forget about variables.
+```
+$ terraform get
+- module.app
+  Getting source "modules/app"
+- module.db
+  Getting source "modules/db"
+```
+
+Can see tree
+```
+ tree .terraform
+.terraform
+├── modules
+│   ├── a9aa53bac9b6b12943ed0fbaf231f446 -> /home/appuser/revard_infra/terraform/modules/db
+│   ├── d52edfb6d63db99f07875dd8b80211c3 -> /home/appuser/revard_infra/terraform/modules/app
+│   └── modules.json
+└── plugins
+    └── linux_amd64
+        ├── lock.json
+        └── terraform-provider-google_v1.4.0_x4
+
+5 directories, 3 files
+```
+### Create enviroments
+Make env dirs (stage and prod) and config files in it.
+Go to each dir end run
+```
+$ terraform init
+...
+$ terraform plan
+...
+```
+
+### Create backend configuration.
+
+Create backend.tf files in env dirs. Then run:
+```
+ $ terraform init
+Initializing modules...
+- module.app
+- module.db
+- module.vpc
+
+Initializing the backend...
+
+Successfully configured the backend "gcs"! Terraform will automatically
+use this backend unless the backend configuration changes.
+...
+```
+
+### Than we can use all the power of deployment and provisioning! 
+

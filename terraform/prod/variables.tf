@@ -38,3 +38,15 @@ variable db_disk_image {
   description = "Disk image for reddit db"
   default     = "reddit-db"
 }
+
+variable provision_var {
+  description = "Set this var to 1 for provision runnig"
+}
+
+variable files_puma_service {
+  description = "File for systemd puma service"
+}
+
+variable files_deploy_sh {
+  description = "File for deploy puma service"
+}
