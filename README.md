@@ -23,14 +23,18 @@ Add to .gitinfnore jdauphant.nginx. Manual can be found here https://github.com/
 
 #### Ansible Vault
 
-Put ansible vault key in ~/.ansible/vault.key. 
+Put ansible vault key in ~/.ansible/vault.key.
+
 Documents about vault https://docs.ansible.com/ansible/devel/user_guide/vault.html 
+
 Good examples how to create key can be found here https://gist.github.com/hvanderlaan/ae5d7f62d42c927fdad42309d25c9693. 
+
 Nice one:
 ```
 # create large random password for ansible-vault
 openssl rand -base64 2048 > ansible-vault.pass
 ```
+
 Encrypt files, key writed in ansible.cfg
 ```
 $ ansible-vault encrypt environments/prod/credentials.yml
@@ -57,18 +61,26 @@ Manual https://github.com/SethMichaelLarson/trytravis
 
 Install `pip install trytravis`
 
-Setup trytravis `$ trytravis --repo ssh://git@github.com/[USERNAME]/[REPOSITORY]`
+Setup trytravis `$ trytravis --repo https://github.com/[USERNAME]/[REPOSITORY]`
 
 Triger test:
 
 ```
-trytravis 
-Adding a temporary remote to `ssh://git@github.com/revard/revard_infra_trytravis`...
+ $ trytravis 
+Adding a temporary remote to `https://github.com/revard/revard_infra_trytravis`...
 Adding all local changes...
 Committing local changes...
 Pushing to `trytravis` remote...
 Reverting to old state...
-Waiting for a Travis build to appear for `59b4fca88d09d4acd00eae3cbf8950202f1ce64e` after `2018-11-11 00:33:59`...
+Waiting for a Travis build to appear for `4634937bc66c4927076186edb0c4e4abb6efc1f7` after `2018-11-11 23:09:28`...
+Travis build id: `453623370`
+Travis build URL: `https://travis-ci.org/revard/revard_infra_trytravis/builds/453623370`
+#1 * linux s bash 
+#1 * linux s bash 
+#1 * linux s bash 
+...
+#1 * linux s bash 
+#1 P linux s bash 
 ```
 
 #### Travis automation: checks and tests
