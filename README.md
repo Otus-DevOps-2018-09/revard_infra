@@ -88,13 +88,13 @@ gcloud compute firewall-rules create default-puma-server \
 
 ## HW-5 Packer base
 
-### Instalation and use
+### Installation and use
  
 Packer configs in directory packer.
 
 All scripts in directory packer/scripts.
 
-User commands bellow to get full installed image adn VM fo puma server.
+User commands bellow to get full installed image and VM fo puma server.
 
 ### Commands for create immutable template by pxacker
 ```
@@ -115,9 +115,9 @@ $ > create-redditvm.sh
 
 ## HW-6 Terraform -1 
 
-Creater config for deploying reddit servers and load balancer
+Create config for deploying reddit servers and load balancer.
 
-Be aware with prameters when using multiple instances. 
+Be aware with parameters when using multiple instances. 
 
 Example of output after first initialization:
 
@@ -158,7 +158,7 @@ app_external_ip = [
 ## HW-7 Terraform-2
 
 ### Create modules
-Make dirs for modules and load modules. Dont forget about variables.
+Make dirs for modules and load modules. Don`t forget about variables.
 ```
 $ terraform get
 - module.app
@@ -234,4 +234,108 @@ $ > ansible all -i inventory.py -m ping
 }
 ```
 You can find script in ansible dir. 
+
+## HW-9 Ansible-2
+
+### Installation
+
+Clone repository.
+```
+clone https://github.com/Otus-DevOps-2018-09/revard_infra/
+```
+Install ansible (ver.>2.7) by any convenient method.
+
+We using gcp dynamic inventory by gce.py script and gcp.ini [taken from here](https://github.com/ansible/ansible/tree/devel/contrib/inventory).
+Setup needed vars in gcp.ini.
+
+For setup gcp credentials use this [manual from ansible](https://docs.ansible.com/ansible/latest/scenario_guides/guide_gce.html). !!!WARNING!!! Add *.json to .gitignore for not commiting gcp credentials json file.
+
+There is terraform dynamic inventory script. It can be useful in geterohenus cloud environment. [Link](https://github.com/adammck/terraform-inventory) for installing and setup.
+
+### Usage
+
+#### Packer
+
+For making images use packer from root project dir:
+
+```
+$ > packer build -var-file=packer/variables.json packer/app.json
+googlecompute output will be in this color.
+
+==> googlecompute: Checking image does not exist...
+==> googlecompute: Creating temporary SSH key for instance...
+==> googlecompute: Using image: ubuntu-1604-xenial-v20181030
+==> googlecompute: Creating instance...
+...
+```
+
+#### Terraform
+
+For creating VM and infrastructure cd in dir terraform/stage:
+
+```
+$ > terraform apply
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + module.app.google_compute_address.app_ip
+      id:                                                  <computed>
+      address:                                             <computed>
+      address_type:                                        "EXTERNAL"
+      name:                                                "reddit-app-ip"
+      project:                                             <computed>
+      region:                                              <computed>
+      self_link:                                           <computed>
+...module.app.google_compute_instance.app: Creation complete after 39s (ID: reddit-app)
+module.db.google_compute_instance.db: Creation complete after 1m0s (ID: reddit-db)
+
+Apply complete! Resources: 6 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = [
+    35.240.xx.xxx
+]
+db_external_ip = [
+    35.240.xx.xxx
+]
+
+```
+
+#### Ansible
+
+Don`t forget to change variable host in app.yml, db.yml, deploy.yml. It depends on groups from dynamic inventory output.
+
+For deploying application by ansible use:
+
+```
+$ > ansible-playbook  site.yml
+
+PLAY [Configure MongoDB] ***********************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************************************************
+ok: [reddit-db]
+
+...
+
+TASK [bundle install] **************************************************************************************************************************************************************************
+changed: [reddit-app]
+
+RUNNING HANDLER [restart puma] *****************************************************************************************************************************************************************
+changed: [reddit-app]
+
+PLAY RECAP *************************************************************************************************************************************************************************************
+reddit-app                 : ok=9    changed=7    unreachable=0    failed=0
+reddit-db                  : ok=3    changed=2    unreachable=0    failed=0
+```
+
+You can use --check for dry run:
+
+```
+$ > ansible-playbook  site.yml --check
+```
 
