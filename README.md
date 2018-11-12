@@ -211,3 +211,27 @@ use this backend unless the backend configuration changes.
 
 ### Than we can use all the power of deployment and provisioning! 
 
+## HW-8 Ansible-1
+
+### Installation and setup
+
+Install python and ansible if needed.
+Setup ansible.cfg like in repo.
+Create inventory file. Different examples of types you can see in ansible dir.
+You can use playbook example clone.yml.
+
+### For using JSON format of inventory you need use command with script:
+
+```
+$ > ansible all -i inventory.py -m ping
+104.155.100.xx | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+104.155.28.xx | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+You can find script in ansible dir. 
+
