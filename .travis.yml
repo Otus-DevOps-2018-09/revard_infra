@@ -7,8 +7,11 @@ cache:
   - $ROOT_PROJECT/terraform/stage
   - $ROOT_PROJECT/terraform/prod
 before_install:
+#otush checks
   - curl https://raw.githubusercontent.com/express42/otus-homeworks/2018-09/run.sh | bash
   - export ROOT_PROJECT=`pwd`
+
+#install packer
   - cd /usr/local/src
   - sudo wget https://releases.hashicorp.com/packer/1.3.1/packer_1.3.1_linux_386.zip
   - sudo unzip packer_*.zip
@@ -16,24 +19,29 @@ before_install:
   - sudo mv /usr/local/src/packer /usr/local/bin/
   - packer -v
 
+#install terraform
   - sudo wget https://releases.hashicorp.com/terraform/0.11.9/terraform_0.11.9_linux_386.zip
   - sudo unzip terraform_*.zip
   - sudo rm -f terraform_*.zip
   - sudo mv /usr/local/src/terraform /usr/local/bin/
   - terraform -v
 
+#install tflint
   - sudo wget https://github.com/wata727/tflint/releases/download/v0.7.2/tflint_linux_386.zip
   - sudo unzip tflint_*.zip
   - sudo rm -f tflint_*.zip
   - sudo mv /usr/local/src/tflint /usr/local/bin/
   - tflint -v
 
+#install ansible
   - sudo pip2 install ansible-lint
   - ansible-lint --version
   - cd $ROOT_PROJECT
+
 script:
 # Check packer json files
   - for i in `find packer -name "*.json"`; do echo "Checking file - $i"; packer validate -var-file=packer/variables.json.example $i; done
+
 # Check terraform stage dirs
   - STAGES="stage prod"
   - for i in $STAGES;

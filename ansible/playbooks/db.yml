@@ -1,7 +1,7 @@
 ---
 - name: Configure MongoDB
   hosts:
-    - app
+    - db
     - tag_reddit-db
   become: true
 
