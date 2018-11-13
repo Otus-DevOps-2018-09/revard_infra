@@ -1,5 +1,71 @@
 # Otus devops course
 
+## HW-11 Ansible-4
+[![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-4)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-4)
+
+### Vagrant
+
+#### Install VirtualBox and Vagrant 
+
+In ansible dir where file Vagrantfile run command:
+```
+$ > vagrant up
+Bringing machine 'dbserver' up with 'virtualbox' provider...
+Bringing machine 'appserver' up with 'virtualbox' provider...
+==> dbserver: Box 'ubuntu/xenial64' could not be found. Attempting to find and install...
+    dbserver: Box Provider: virtualbox
+    dbserver: Box Version: >= 0
+...
+```
+
+#### Check status:
+```
+$ >  vagrant box list
+ubuntu/xenial64 (virtualbox, 20181113.0.0)
+
+$ >  vagrant status
+Current machine states:
+
+dbserver                  running (virtualbox)
+appserver                 running (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`
+```
+
+#### Check connection:
+```
+ $ >  vagrant ssh appserver 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-138-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+New release '18.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+vagrant@appserver:~$  ping -c 2 10.10.10.10 
+PING 10.10.10.10 (10.10.10.10) 56(84) bytes of data.
+64 bytes from 10.10.10.10: icmp_seq=1 ttl=64 time=1.33 ms
+64 bytes from 10.10.10.10: icmp_seq=2 ttl=64 time=0.974 ms
+
+--- 10.10.10.10 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1005ms
+rtt min/avg/max/mdev = 0.974/1.155/1.336/0.181 ms
+vagrant@appserver:~$ logout
+Connection to 127.0.0.1 closed.
+```
+
+
 ## HW-10 Ansible-3
 [![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
 
