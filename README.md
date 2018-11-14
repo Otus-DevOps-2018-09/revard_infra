@@ -91,6 +91,7 @@ In file .travis.yml writed some instructions and tests for checking of project i
 ## HW-9 Ansible-2
 ![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-2)
 
+
 ### Installation
 
 Clone repository.
