@@ -65,6 +65,173 @@ vagrant@appserver:~$ logout
 Connection to 127.0.0.1 closed.
 ```
 
+### Molecule
+
+#### Install
+
+Install molecule https://molecule.readthedocs.io/en/latest/installation.html
+
+Recommended use  virtualenv for python https://docs.python-guide.org/dev/virtualenvs/
+
+#### Init
+
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $  molecule init scenario --scenario-name default -r db -d vagrant
+--> Initializing new scenario default...
+```
+
+#### Create VM
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule create
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+--> Test matrix
+
+└── default
+    ├── create
+    └── prepare
+
+--> Scenario: 'default'
+--> Action: 'create'
+
+    PLAY [Create] ******************************************************************
+
+    TASK [Create molecule instance(s)] *********************************************
+    changed: [localhost] => (item=None)
+    changed: [localhost]
+
+    TASK [Populate instance config dict] *******************************************
+    ok: [localhost] => (item=None)
+    ok: [localhost]
+
+    TASK [Convert instance config dict to a list] **********************************
+    ok: [localhost]
+
+    TASK [Dump instance config] ****************************************************
+    changed: [localhost]
+
+    PLAY RECAP *********************************************************************
+    localhost                  : ok=4    changed=2    unreachable=0    failed=0
+
+
+--> Scenario: 'default'
+--> Action: 'prepare'
+
+    PLAY [Prepare] *****************************************************************
+
+    TASK [Install python for Ansible] **********************************************
+    ok: [instance]
+
+    PLAY RECAP *********************************************************************
+    instance                   : ok=1    changed=0    unreachable=0    failed=0
+```
+
+#### List
+
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule list
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+Instance Name    Driver Name    Provisioner Name    Scenario Name    Created    Converged
+---------------  -------------  ------------------  ---------------  ---------  -----------
+instance         vagrant        ansible             default          true       false
+```
+
+Login
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule login -h instance
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+Warning: Permanently added '[127.0.0.1]:2201' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-138-generic x86_64)
+...
+Last login: Wed Nov 14 18:04:48 2018 from 10.0.2.2
+vagrant@instance:~$
+```
+
+#### Applay config
+
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule converge
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+--> Test matrix
+
+└── default
+    ├── dependency
+    ├── create
+    ├── prepare
+    └── converge
+
+--> Scenario: 'default'
+--> Action: 'dependency'
+Skipping, missing the requirements file.
+--> Scenario: 'default'
+--> Action: 'create'
+Skipping, instances already created.
+--> Scenario: 'default'
+--> Action: 'prepare'
+Skipping, instances already prepared.
+--> Scenario: 'default'
+--> Action: 'converge'
+
+    PLAY [Converge] ****************************************************************
+
+    TASK [Gathering Facts] *********************************************************
+    ok: [instance]
+
+    TASK [db : Show info about the env this host belongs to] ***********************
+    ok: [instance] => {
+        "msg": "This host is in local environment!!!"
+    }
+
+    TASK [db : Add APT key] ********************************************************
+    changed: [instance]
+
+    TASK [db : Add APT repository] *************************************************
+    changed: [instance]
+
+    TASK [db : Install mongodb package] ********************************************
+    changed: [instance]
+
+    TASK [db : Configure service supervisor] ***************************************
+    changed: [instance]
+
+    TASK [db : Change mongo config file] *******************************************
+    changed: [instance]
+
+    RUNNING HANDLER [db : restart mongod] ******************************************
+    changed: [instance]
+
+    PLAY RECAP *********************************************************************
+    instance                   : ok=8    changed=6    unreachable=0    failed=0
+```
+
+#### Test
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $  molecule verify
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+--> Test matrix
+
+└── default
+    └── verify
+
+--> Scenario: 'default'
+--> Action: 'verify'
+--> Executing Testinfra tests found in /home/alf/revard_infra/ansible/roles/db/molecule/default/tests/...
+    ============================= test session starts ==============================
+    platform linux2 -- Python 2.7.15rc1, pytest-4.0.0, py-1.7.0, pluggy-0.8.0
+    rootdir: /home/alf/revard_infra/ansible/roles/db/molecule/default, inifile:
+    plugins: testinfra-1.17.0
+collected 2 items
+
+    tests/test_default.py ..                                                 [100%]
+
+    =========================== 2 passed in 5.29 seconds ===========================
+Verifier completed successfully.
+```
+
 
 ## HW-10 Ansible-3
 [![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
