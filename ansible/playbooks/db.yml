@@ -6,5 +6,5 @@
   become: true
 
   roles:
-    - db
+    - { role: test-ansible-role-db }
 
