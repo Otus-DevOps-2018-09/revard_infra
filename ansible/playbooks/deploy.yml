@@ -1,5 +1,5 @@
 - name: Deploy App
-  hosts: 
+  hosts:
     - app
     - tag_reddit-app
   vars:
