@@ -5,7 +5,6 @@ variables.json
 *.tfvars
 .terraform/
 *.retry
-jdauphant.nginx
 vault.key
 # Vagrant & molecule
 .vagrant/
@@ -14,4 +13,6 @@ vault.key
 .molecule
 .cache
 .pytest_cache
-
+# Ansible roles
+test-ansible-role-db
+jdauphant.nginx

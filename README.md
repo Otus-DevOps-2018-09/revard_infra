@@ -232,6 +232,20 @@ collected 2 items
 Verifier completed successfully.
 ```
 
+### Ansible
+
+You need to use ansible-galaxy to install roles from env dirs (stage, prod) where is requirements.yml  file.
+
+```
+$ > ansible-galaxy install -r requirements.yml -p roles/
+- downloading role 'nginx', owned by jdauphant
+- downloading role from https://github.com/jdauphant/ansible-role-nginx/archive/v2.21.1.tar.gz
+- extracting jdauphant.nginx to /home/tgz/revard_infra/ansible/environments/stage/roles/jdauphant.nginx
+- jdauphant.nginx (v2.21.1) was installed successfully
+- extracting test-ansible-role-db to /home/tgz/revard_infra/ansible/environments/stage/roles/test-ansible-role-db
+- test-ansible-role-db was installed successfully
+```
+
 
 ## HW-10 Ansible-3
 [![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
