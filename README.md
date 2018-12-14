@@ -1,5 +1,252 @@
 # Otus devops course
 
+## HW-11 Ansible-4
+[![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-4)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-4)
+
+### Vagrant
+
+#### Install VirtualBox and Vagrant 
+
+In ansible dir where file Vagrantfile run command:
+```
+$ > vagrant up
+Bringing machine 'dbserver' up with 'virtualbox' provider...
+Bringing machine 'appserver' up with 'virtualbox' provider...
+==> dbserver: Box 'ubuntu/xenial64' could not be found. Attempting to find and install...
+    dbserver: Box Provider: virtualbox
+    dbserver: Box Version: >= 0
+...
+```
+
+#### Check status:
+```
+$ >  vagrant box list
+ubuntu/xenial64 (virtualbox, 20181113.0.0)
+
+$ >  vagrant status
+Current machine states:
+
+dbserver                  running (virtualbox)
+appserver                 running (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`
+```
+
+#### Check connection:
+```
+ $ >  vagrant ssh appserver 
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-138-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+New release '18.04.1 LTS' available.
+Run 'do-release-upgrade' to upgrade to it.
+
+
+vagrant@appserver:~$  ping -c 2 10.10.10.10 
+PING 10.10.10.10 (10.10.10.10) 56(84) bytes of data.
+64 bytes from 10.10.10.10: icmp_seq=1 ttl=64 time=1.33 ms
+64 bytes from 10.10.10.10: icmp_seq=2 ttl=64 time=0.974 ms
+
+--- 10.10.10.10 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1005ms
+rtt min/avg/max/mdev = 0.974/1.155/1.336/0.181 ms
+vagrant@appserver:~$ logout
+Connection to 127.0.0.1 closed.
+```
+
+### Molecule
+
+#### Install
+
+Install molecule https://molecule.readthedocs.io/en/latest/installation.html
+
+Recommended use  virtualenv for python https://docs.python-guide.org/dev/virtualenvs/
+
+#### Init
+
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $  molecule init scenario --scenario-name default -r db -d vagrant
+--> Initializing new scenario default...
+```
+
+#### Create VM
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule create
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+--> Test matrix
+
+└── default
+    ├── create
+    └── prepare
+
+--> Scenario: 'default'
+--> Action: 'create'
+
+    PLAY [Create] ******************************************************************
+
+    TASK [Create molecule instance(s)] *********************************************
+    changed: [localhost] => (item=None)
+    changed: [localhost]
+
+    TASK [Populate instance config dict] *******************************************
+    ok: [localhost] => (item=None)
+    ok: [localhost]
+
+    TASK [Convert instance config dict to a list] **********************************
+    ok: [localhost]
+
+    TASK [Dump instance config] ****************************************************
+    changed: [localhost]
+
+    PLAY RECAP *********************************************************************
+    localhost                  : ok=4    changed=2    unreachable=0    failed=0
+
+
+--> Scenario: 'default'
+--> Action: 'prepare'
+
+    PLAY [Prepare] *****************************************************************
+
+    TASK [Install python for Ansible] **********************************************
+    ok: [instance]
+
+    PLAY RECAP *********************************************************************
+    instance                   : ok=1    changed=0    unreachable=0    failed=0
+```
+
+#### List
+
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule list
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+Instance Name    Driver Name    Provisioner Name    Scenario Name    Created    Converged
+---------------  -------------  ------------------  ---------------  ---------  -----------
+instance         vagrant        ansible             default          true       false
+```
+
+Login
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule login -h instance
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+Warning: Permanently added '[127.0.0.1]:2201' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 16.04.5 LTS (GNU/Linux 4.4.0-138-generic x86_64)
+...
+Last login: Wed Nov 14 18:04:48 2018 from 10.0.2.2
+vagrant@instance:~$
+```
+
+#### Applay config
+
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $ molecule converge
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+--> Test matrix
+
+└── default
+    ├── dependency
+    ├── create
+    ├── prepare
+    └── converge
+
+--> Scenario: 'default'
+--> Action: 'dependency'
+Skipping, missing the requirements file.
+--> Scenario: 'default'
+--> Action: 'create'
+Skipping, instances already created.
+--> Scenario: 'default'
+--> Action: 'prepare'
+Skipping, instances already prepared.
+--> Scenario: 'default'
+--> Action: 'converge'
+
+    PLAY [Converge] ****************************************************************
+
+    TASK [Gathering Facts] *********************************************************
+    ok: [instance]
+
+    TASK [db : Show info about the env this host belongs to] ***********************
+    ok: [instance] => {
+        "msg": "This host is in local environment!!!"
+    }
+
+    TASK [db : Add APT key] ********************************************************
+    changed: [instance]
+
+    TASK [db : Add APT repository] *************************************************
+    changed: [instance]
+
+    TASK [db : Install mongodb package] ********************************************
+    changed: [instance]
+
+    TASK [db : Configure service supervisor] ***************************************
+    changed: [instance]
+
+    TASK [db : Change mongo config file] *******************************************
+    changed: [instance]
+
+    RUNNING HANDLER [db : restart mongod] ******************************************
+    changed: [instance]
+
+    PLAY RECAP *********************************************************************
+    instance                   : ok=8    changed=6    unreachable=0    failed=0
+```
+
+#### Test
+```
+alf@alf-pad~/revard_infra/ansible/roles/db (ansible-4) $  molecule verify
+--> Validating schema /home/alf/revard_infra/ansible/roles/db/molecule/default/molecule.yml.
+Validation completed successfully.
+--> Test matrix
+
+└── default
+    └── verify
+
+--> Scenario: 'default'
+--> Action: 'verify'
+--> Executing Testinfra tests found in /home/alf/revard_infra/ansible/roles/db/molecule/default/tests/...
+    ============================= test session starts ==============================
+    platform linux2 -- Python 2.7.15rc1, pytest-4.0.0, py-1.7.0, pluggy-0.8.0
+    rootdir: /home/alf/revard_infra/ansible/roles/db/molecule/default, inifile:
+    plugins: testinfra-1.17.0
+collected 2 items
+
+    tests/test_default.py ..                                                 [100%]
+
+    =========================== 2 passed in 5.29 seconds ===========================
+Verifier completed successfully.
+```
+
+### Ansible
+
+You need to use ansible-galaxy to install roles from env dirs (stage, prod) where is requirements.yml  file.
+
+```
+$ > ansible-galaxy install -r requirements.yml -p roles/
+- downloading role 'nginx', owned by jdauphant
+- downloading role from https://github.com/jdauphant/ansible-role-nginx/archive/v2.21.1.tar.gz
+- extracting jdauphant.nginx to /home/tgz/revard_infra/ansible/environments/stage/roles/jdauphant.nginx
+- jdauphant.nginx (v2.21.1) was installed successfully
+- extracting test-ansible-role-db to /home/tgz/revard_infra/ansible/environments/stage/roles/test-ansible-role-db
+- test-ansible-role-db was installed successfully
+```
+
+
 ## HW-10 Ansible-3
 [![Build Status](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)](https://travis-ci.com/Otus-DevOps-2018-09/revard_infra.svg?branch=ansible-3)
 
